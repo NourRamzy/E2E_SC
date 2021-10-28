@@ -53,12 +53,12 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.lang.Math;
 
-//Comment to check if push works (Eric)
-
 
 public class generator {
-	public static int time_big= 10; 
-	public static int frequency= 2; 
+	public static int time_big= 100; 
+	public static int frequency= 10; 
+	//public static int min_cap= 600; 
+	public static int max_cap=1500; 
 	
 	public static ArrayList<String> listtt=new ArrayList<String>();  
 	static String SOURCE = "http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6";
@@ -147,9 +147,10 @@ public class generator {
 	    List <QuerySolution> l= execute_query(s, model);
 	    print_results(l, 1);*/
         /////////////////////////////////////////////////////
-	    generation(model); 
+	    int x= generation(model); 
 	    allocation(model); 
 	    allocation_KPI(model,1);
+	    System.out.println("Count"+x); 
 	    //String portfolios = "Select * where {?order :hasQuantity ?q. ?order :hasDeliveryTime ?d.    ?order :hasPortfolio ?p. <<?p :needsNode ?node>>  ?z ?f. }"; 
 	   // print_results(execute(Prefix+portfolios,model), 1); 
 	    
@@ -212,6 +213,7 @@ public class generator {
 					+ "Filter ((xsd:integer(?time)-xsd:integer("+oem_leadtime+"))= xsd:integer("+t+"))"
 					+ "} order by desc (?priority)"; 
 			 orders= execute (q,model);
+			 print_results(orders,1); 
 			if (orders.size()==0)
 				{
 				 q= Prefix+"Select * where { "
@@ -249,7 +251,7 @@ public class generator {
 			if (oem_alloc==0)
 			{
 				update_order_fulfilled(order, "true", model); // order fulfilled;
-				System.out.println("Order"+order+" fulfilled");
+				System.out.println("Order"+order+" fulfilled at OEM");
 				create_order_portfolio(model, "OEM1", portfolio, quantity,t, product,price, order); 
 				create_inventory_increase(model,t,"OEM1",10);
 			}
@@ -260,7 +262,7 @@ public class generator {
 					create_order_portfolio(model, "OEM1", portfolio, qq1,t, product,price, order); 
 					}
 				boolean flag= allocate(product, oem_alloc, model, t,portfolio,order); 
-				System.out.println("Order"+order+flag);
+	//			System.out.println("Order"+order+flag);
 				update_order_fulfilled(order, flag+"", model); // order fulfilled;
 				if (flag== false)
 				{
@@ -278,7 +280,7 @@ public class generator {
 			
 			}
 			}
-			create_inventory_increase(model,t,"OEM1", 0); 
+			create_inventory_increase(model,t,"OEM1", 3); 
 		
 		}
 		// TODO Auto-generated method stub
@@ -428,7 +430,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 					"?inv :hasTimeStamp \""+t+"\". "
 					+ "?inv :hasQuantity ?q. }";  
 			UpdateAction.parseExecute(query, model) ;
-			System.out.println("at time"+t+"OEM was: "+oem_q+"now at"+ (oem_q- quantity)); 
+		//	System.out.println("at time"+t+"OEM was: "+oem_q+"now at"+ (oem_q- quantity)); 
 		return 0; 
 		}
 		else 
@@ -450,7 +452,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 			
 	}
 
-	private static void generation(OntModel model) {
+	private static int generation(OntModel model) {
 		//create_product(model); 
 		try {
 			create_read_products(model);
@@ -465,6 +467,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		//create_inventory_increase(model); 
 		// TODO Auto-generated method stub
 		System.out.println("OrderCount"+ x); 
+		return x; 
 	}
 
 	 
@@ -546,7 +549,8 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 			inv.addProperty(has_product, product); 
 			inv.addProperty(time, "0"); 
 			inv.addProperty(has_quantity, "10");
-			inv.addProperty(has_price,getRandomValue(10,50));
+		//	inv.addProperty(has_price,getRandomValue(10,50));
+			inv.addProperty(has_price,60+"");
 			oem.addProperty(hasInventory, inv);
 	  
 	}
@@ -561,7 +565,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		for (int i=0; i<suppliers.size();i++)
 	      {
 			Individual supplier = model.getIndividual(suppliers.get(i).get("subject").toString());
-			supplier.addProperty(capacity_saturation, getRandomValue(100,1000));
+			supplier.addProperty(capacity_saturation, 3000+"");
 			//supplier.addProperty(capacity_saturation, 3+"");
 	      }
 		
@@ -575,7 +579,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 
 	private static int create_orders(OntModel model ) {
 		String query= Prefix+ "SELECT ?subject \r\n" + 
-				"	WHERE { ?subject a :Customer. ?subject :belongsToTier :CustomerTier1. ?customer :hasPriority ?p} ORDER  BY desc(?p)  "; 
+				"	WHERE { ?subject a :Customer. ?subject :belongsToTier :CustomerTier1. } ORDER  BY desc(?p)  "; 
 		List<QuerySolution> customers= execute (query,model); 
 		Property makes = model.getProperty(NS+"makes");
 		OntClass order = model.getOntClass( NS + "Order" );
@@ -590,20 +594,40 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 			int g=i+1; 
 			customer.addProperty(hasPriority,g+""); 
 			Individual product = model.getIndividual(NS+"ProductA");
-			String p= customers.get(i).get("p").toString(); 
-			int c=0; 
-			if (p.contains("4")|| p.contains("3")) c=3; 
-			for (int t=6; t<time_big+6+c; t++)
+			//String p= customers.get(i).get("p").toString(); 
+			int orders=1; 
+			
+			
+			for (int t=6; t<time_big+6; t++)
 			{
 				//System.out.println("Customer: "+customer+ " time: "+ t+" OrderCount: "+ order_count);
+				for (int f=0;f<1; f++)
+				{ 
+				
 			Individual order_ind = model.createIndividual( NS+"Order"+RandomStringUtils.randomAlphanumeric(8), order);
 	        customer.addProperty(makes,order_ind);
 	        order_ind.addProperty(time,t+""); 
-	        t=t+frequency; 
+	       // t=t+frequency; 
 	        order_ind.addProperty(has_product, product); 
 	        order_ind.addProperty(has_quantity, getRandomValue(1,10)); 
 	        order_count++; 
 	        }
+			}
+			System.out.println("order count"+ order_count);
+		/*	int t=6; 
+			for (int f=0;f<orders; f++)
+			{ 
+				Individual order_ind = model.createIndividual( NS+"Order"+RandomStringUtils.randomAlphanumeric(8), order);
+	        customer.addProperty(makes,order_ind);
+	        order_ind.addProperty(time,t+""); 
+	         
+	        order_ind.addProperty(has_product, product); 
+	        order_ind.addProperty(has_quantity, getRandomValue(1,10)); 
+	        order_count++; 
+				if (f<4) t=f+frequency;
+				
+			}
+			System.out.println("order count"+ order_count);*/
 		}
 		System.out.println("order count"+ order_count);
 		return order_count; 
@@ -807,11 +831,11 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	    print_results(l, time); 
 	    all.add(l);
 	    
-	    s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\optimization strategies\\getFulfillmentCustomer.rq";
+	  /*  s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\optimization strategies\\getFulfillmentCustomer.rq";
 	    l= execute_query(s, model);
 	    print_results(l, time); 
 	    all.add(l);
-	    
+	    */
 	    s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\optimization strategies\\utilization.rq";
 	    l= execute_query(s,model);
 	    print_results(l, time);
@@ -1568,7 +1592,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 					+ "?snode :hasLeadTime ?lt. \r\n" 
 					+ "BIND (xsd:integer("+t+") - xsd:integer(?lt) as ?allocationtime).  \r\n" +
 					"BIND (xsd:integer(?quantity) + xsd:integer("+ tofullfil+") as ?diff).   \r\n" +
-					"FILTER  (regex(str(?tier), \"SupplierTier1\"))}";   
+					"FILTER  ( regex(str(?tier), \"SupplierTier1\") && regex(str(?p),\""+component.split("#")[1]+"\"))}";   
 		 List<QuerySolution> ll= execute (Prefix+test, model); 
 		String q= Prefix+ "Select * \r\n" + 
 				"where \r\n" + 
@@ -1585,7 +1609,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 				+ "BIND (xsd:integer("+t+") - xsd:integer(?lt) as ?allocationtime).  \r\n" +
 				"BIND (xsd:integer(?quantity) + xsd:integer("+ tofullfil+") as ?diff).   \r\n" +
 				"FILTER  (regex(str(?tier), \"SupplierTier1\")"
-				+ "&& (xsd:integer(?saturation)>= ?diff) && regex(str(?p),\""+component.split("#")[1]+"\")"
+				+ "&& (xsd:integer(?saturation)>= ?diff) && regex(str(?p),\""+component.split("#")[1]+"\")" 
 				+ " && (xsd:integer(?allocationtime)= xsd:integer(?capacitytime))).\r\n }"  ;  
 		List<QuerySolution> l= execute (Prefix+q, model); 
 		if (l.size()>0)
@@ -1632,6 +1656,13 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 	private static void propagate_capacity(String allocation_t, int t, String supplier, String y, OntModel model) {
 		for (int i=Integer.parseInt(allocation_t); i<=t; i++)
 		{
+			String test= Prefix+ "Select * "+ "where \r\n" + 
+					"{:"+supplier+" :hasCapacity ?cap.\r\n" + 
+					"?cap :hasProduct ?p.\r\n" + 
+					"?cap :hasQuantity ?quantity.\r\n" + 
+					"?cap :hasTimeStamp \""+i+"\"."
+					+ "}\r\n" ; 
+			print_results(execute (test, model),1); 
 			String q= Prefix+"DELETE   \r\n" + 
 					"{?cap :hasQuantity ?quantity.\r\n }\r\n" + 
 					"Insert {?cap :hasQuantity \""+y+"\"}\r\n" + 
@@ -1643,12 +1674,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 					"?cap :hasTimeStamp \""+i+"\"."
 					+ "}\r\n" ; 
 			UpdateAction.parseExecute(q, model) ;
-			String test= Prefix+ "Select * "+ "where \r\n" + 
-					"{:"+supplier+" :hasCapacity ?cap.\r\n" + 
-					"?cap :hasProduct ?p.\r\n" + 
-					"?cap :hasQuantity ?quantity.\r\n" + 
-					"?cap :hasTimeStamp \""+i+"\"."
-					+ "}\r\n" ; 
+			
 			print_results(execute (test, model),1); 
 		 
 		}

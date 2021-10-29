@@ -1,0 +1,24 @@
+SupplierTier: 3
+SupplierNodePerTier: 4 4 2
+hasCost: 0 100
+hasResponsiveness: 0 100
+hasReliability: 0 100
+hasLocation: 100 200
+hasAssetManagementEfficiency: 100 200
+hasMaximumCapacity: 200 300
+hasCurrentCapacity: 100 200
+hasAgility: 0 100
+hasCO2Balance: 0 100
+hasGroup: 2 2 3
+///////////////////////
+CustomerTier: 3
+CustomerNodePerTier: 4 3 4
+hasLocation: 100 200
+hasCost: 200 300
+hasResponsiveness: 0 100
+hasReliability: 0 100
+hasAssetManagementEfficiency: 200 300
+hasAgility: 0 100
+hasCO2Balance: 100 200
+hasDemand: 100 200
+hasGroup: 1 3

@@ -1,74 +1,35 @@
-import java.io.BufferedReader;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Random;
-import java.util.Set;
-import java.util.TreeMap;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
 import org.apache.jena.ontology.OntModel;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.query.ResultSetFormatter;
-import org.apache.jena.rdf.model.Model;
+import org.apache.jena.query.*;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
-import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.update.UpdateAction;
-import org.topbraid.jenax.util.JenaUtil;
-import org.topbraid.shacl.rules.RuleUtil;
+import org.apache.jena.util.FileManager;
 
-
-import io.github.galbiston.geosparql_jena.configuration.GeoSPARQLOperations;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.lang.Math;
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
 
 
 public class generator {
 	public static int time_big= 100; 
-	public static int frequency= 10; 
+	//public static int frequency= 10;
 	//public static int min_cap= 600; 
-	public static int max_cap=1500; 
+	//public static int max_cap=1500;
 	
-	public static ArrayList<String> listtt=new ArrayList<String>();  
+	//public static ArrayList<String> listtt=new ArrayList<String>();
 	static String SOURCE = "http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6";
     static String NS = SOURCE + "#";
-    static String Scor= "http://purl.org/eis/vocab/scor#";
-    public static int S_Tiers; 
-    public static int C_Tiers;  
-    static ArrayList<Integer> supplier_tiers ;
-    static ArrayList<Integer> customer_tiers ;
-    public static 	 HashMap<String, ArrayList<Integer>> hash_map ;
+    //static String Scor= "http://purl.org/eis/vocab/scor#";
+    //public static int S_Tiers;
+    //public static int C_Tiers;
+    //static ArrayList<Integer> supplier_tiers ;
+    //static ArrayList<Integer> customer_tiers ;
+    public static HashMap<String, ArrayList<Integer>> hash_map ;
 	public static HashMap<String, ArrayList<Integer>> hash_map_customer ;
 	public static HashMap<String,ArrayList<String>> sc_uniques_final ;
 	
@@ -76,26 +37,28 @@ public class generator {
 	private static String Prefix;
 
 	public static BufferedWriter out = null;
-	public static BufferedWriter out2 = null;
+	//public static BufferedWriter out2 = null;
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws IOException {
 		
-		Prefix= "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n" + 
-				"PREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n" + 
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n" + 
-				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r\n" + 
-				"Prefix : <http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#>"; 
+		Prefix= """
+				PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r
+				PREFIX owl: <http://www.w3.org/2002/07/owl#>\r
+				PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r
+				PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r
+				Prefix : <http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#>""";
 		hash_map = new HashMap<String, ArrayList<Integer>>();
 		hash_map_customer = new HashMap<String, ArrayList<Integer>>();
 		sc_uniques_final = new HashMap<String, ArrayList<String>>();
 
-		File file = new File("C:\\Users\\Ramzy\\Desktop\\datagenerator\\configurationfile.txt");
+		File file = new File("src/optimization strategies/configurationfile.txt");
 		BufferedReader br = new BufferedReader(new FileReader(file));
-		out = new BufferedWriter (new FileWriter("C:/Users/Ramzy/Desktop/datagenerator/july_out.ttl"));
-		out2 = new BufferedWriter (new FileWriter("C:/Users/Ramzy/Desktop/datagenerator/temp_out.ttl"));
-	 OntModel model = ModelFactory.createOntologyModel();
-	model.read("C:/Users/Ramzy/Desktop/datagenerator/generator.owl");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		out = new BufferedWriter (new FileWriter("src/optimization strategies/out1.ttl"));
+		//out2 = new BufferedWriter (new FileWriter("C:/Users/eric.beitz@infineon.com/Developer stuff/out2.ttl"));
+		OntModel model = ModelFactory.createOntologyModel();
+		InputStream generator = FileManager.get().open( "src/optimization strategies/generator.owl" );
+		model.read(generator, null);
+		//BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		read_parameters(br, model);
         OntClass Supplier_Node = model.getOntClass( NS + "Supplier");
         OntClass Customer_Node = model.getOntClass( NS + "Customer");
@@ -125,21 +88,21 @@ public class generator {
         Property hasUpStreamNode  = model.getProperty(NS+"hasUpStreamNode");
         Property node_oem  = model.getProperty(NS+"hasOEM");
     	
-		create_tiers_nodes (hash_map.get("SupplierTier").get(0), hash_map.get("SupplierNodePerTier"), Supplier_Node, reader, model);
+		create_tiers_nodes (hash_map.get("SupplierTier").get(0), hash_map.get("SupplierNodePerTier"), Supplier_Node, model);
         create_relations(hash_map.get("SupplierTier").get(0),hash_map.get("SupplierNodePerTier"), oem, hasUpStreamTier, hasUpStreamNode, node_oem, Supplier_Node, model); 
         //////////////////////////////////////////create oem 
         Property hasDownStreamTier = model.getProperty(NS+"hasDownStreamTier");
         Property hasDownStreamNode  = model.getProperty(NS+"hasDownStreamNode");
         Property oem_node  = model.getProperty(NS+"OEMhasNode");
         ////////////////////////////////////////create customer 
-        create_tiers_nodes ( hash_map_customer.get("CustomerTier").get(0), hash_map_customer.get("CustomerNodePerTier"), Customer_Node, reader,model);
+        create_tiers_nodes ( hash_map_customer.get("CustomerTier").get(0), hash_map_customer.get("CustomerNodePerTier"), Customer_Node, model);
         create_relations(hash_map_customer.get("CustomerTier").get(0),hash_map_customer.get("CustomerNodePerTier"),oem,hasDownStreamTier, hasDownStreamNode,oem_node, Customer_Node, model); 
         //replace_byUI(model); 
         OntModel copyOfOntModel  = ModelFactory.createOntologyModel(model.getSpecification()) ; 
 	    copyOfOntModel.add( model.getBaseModel() );
 	   System.out.println("Model Size"+ model.size() + " Copy Model Size:"+ copyOfOntModel.size()); 
-	    create_raw_material(model,100,200, null );
-        createMaterialFlow(model, null);
+	    create_raw_material(model);
+        //createMaterialFlow(model, null);
 		create_capacity(model);
 		System.out.println("Model Size"+ model.size() + " Copy Model Size:"+ copyOfOntModel.size());
         /////////////////////////////////////////////////////Evaluation 
@@ -149,7 +112,7 @@ public class generator {
         /////////////////////////////////////////////////////
 	    int x= generation(model); 
 	    allocation(model); 
-	    allocation_KPI(model,1);
+	    allocation_KPI(model);
 	    System.out.println("Count"+x); 
 	    //String portfolios = "Select * where {?order :hasQuantity ?q. ?order :hasDeliveryTime ?d.    ?order :hasPortfolio ?p. <<?p :needsNode ?node>>  ?z ?f. }"; 
 	   // print_results(execute(Prefix+portfolios,model), 1); 
@@ -200,7 +163,7 @@ public class generator {
 					+"?order :hasProduct ?p. "
 					+ "} "; 
 			List<QuerySolution> orders= execute (qq,model);
-			print_results(orders,1); 
+			print_results(orders);
 			System.out.println("Time"+t); 
 			maintain_capacity_inventory(t,model); 
 			String q= Prefix+"Select * where { "
@@ -213,7 +176,7 @@ public class generator {
 					+ "Filter ((xsd:integer(?time)-xsd:integer("+oem_leadtime+"))= xsd:integer("+t+"))"
 					+ "} order by desc (?priority)"; 
 			 orders= execute (q,model);
-			 print_results(orders,1); 
+			 print_results(orders);
 			if (orders.size()==0)
 				{
 				 q= Prefix+"Select * where { "
@@ -222,65 +185,60 @@ public class generator {
 						+"?order :hasProduct ?p. "
 						+ "} "; 
 				 orders= execute (q,model);
-					for (int j=0; j<orders.size(); j++)
-					{
-						String order= orders.get(j).get("order").toString();
+					for (QuerySolution querySolution : orders) {
+						String order = querySolution.get("order").toString();
 						update_order_fulfilled(order, "false", model); // order not fulfilled;
-						
+
 					}
 				}
 			else
 			{
-			for (int o=0; o<orders.size(); o++)
-			{
-				String order= orders.get(o).get("order").toString();
-				String quantity= orders.get(o).get("q").toString();
-				String product= orders.get(o).get("p").toString();
-			int oem_alloc= check_oem_inventory(orders.get(o), t, model); 
-			OntClass portfolio_class = model.getOntClass( NS + "Portfolio");
-			 Individual portfolio = model.createIndividual( NS+"Portfolio"+RandomStringUtils.randomAlphanumeric(8), portfolio_class);
-			 Individual order_ind= model.getIndividual(order); 
-			
-			Property hasPortfolio = model.getProperty(NS+"hasPortfolio");
-			order_ind.addProperty(hasPortfolio,portfolio);
-			String query= Prefix+ "SELECT ?inv ?q ?p\r\n" + 
-					"	WHERE {  :OEM1 :hasInventory ?inv. ?inv :hasTimeStamp \""+t+"\". ?inv :hasQuantity ?q.  ?inv :hasPrice ?p.}"; 
-			List<QuerySolution> solutions= execute (query,model); 
-			String price= solutions.get(0).get("p").toString(); 
-			
-			if (oem_alloc==0)
-			{
-				update_order_fulfilled(order, "true", model); // order fulfilled;
-				System.out.println("Order"+order+" fulfilled at OEM");
-				create_order_portfolio(model, "OEM1", portfolio, quantity,t, product,price, order); 
-				create_inventory_increase(model,t,"OEM1",10);
-			}
-			else // need to allocate suppliers with quantity = return from oem check 
-			{
-				String qq1=(Integer.parseInt(quantity)-oem_alloc) +""; 
-				if (!qq1.equals("0")) {
-					create_order_portfolio(model, "OEM1", portfolio, qq1,t, product,price, order); 
+				for (QuerySolution querySolution : orders) {
+					String order = querySolution.get("order").toString();
+					String quantity = querySolution.get("q").toString();
+					String product = querySolution.get("p").toString();
+					int oem_alloc = check_oem_inventory(querySolution, t, model);
+					OntClass portfolio_class = model.getOntClass(NS + "Portfolio");
+					Individual portfolio = model.createIndividual(NS + "Portfolio" + RandomStringUtils.randomAlphanumeric(8), portfolio_class);
+					Individual order_ind = model.getIndividual(order);
+
+					Property hasPortfolio = model.getProperty(NS + "hasPortfolio");
+					order_ind.addProperty(hasPortfolio, portfolio);
+					String query = Prefix + "SELECT ?inv ?q ?p\r\n" +
+							"	WHERE {  :OEM1 :hasInventory ?inv. ?inv :hasTimeStamp \"" + t + "\". ?inv :hasQuantity ?q.  ?inv :hasPrice ?p.}";
+					List<QuerySolution> solutions = execute(query, model);
+					String price = solutions.get(0).get("p").toString();
+
+					if (oem_alloc == 0) {
+						update_order_fulfilled(order, "true", model); // order fulfilled;
+						System.out.println("Order" + order + " fulfilled at OEM");
+						create_order_portfolio(model, "OEM1", portfolio, quantity, t, product, price, order);
+						create_inventory_increase(model, t, 10);
+					} else // need to allocate suppliers with quantity = return from oem check
+					{
+						String qq1 = (Integer.parseInt(quantity) - oem_alloc) + "";
+						if (!qq1.equals("0")) {
+							create_order_portfolio(model, "OEM1", portfolio, qq1, t, product, price, order);
+						}
+						boolean flag = allocate(product, oem_alloc, model, t, portfolio, order);
+						//			System.out.println("Order"+order+flag);
+						update_order_fulfilled(order, flag + "", model); // order fulfilled;
+						if (!flag) {
+							String delete = Prefix + "DELETE   \r\n" +
+									"{<" + order + "> :hasPortfolio ?p.  <" + order + "> :hasOriginalQuantity ?q. <" + order + "> :hasTotalOriginalPrice ?price}\r\n" +
+									"where \r\n" +
+									"{ <" + order + "> :hasPortfolio ?p}\r\n";
+							UpdateAction.parseExecute(delete, model);
+
+						}
+
 					}
-				boolean flag= allocate(product, oem_alloc, model, t,portfolio,order); 
-	//			System.out.println("Order"+order+flag);
-				update_order_fulfilled(order, flag+"", model); // order fulfilled;
-				if (flag== false)
-				{
-					String delete= 			Prefix+ 		"DELETE   \r\n" + 
-					"{<"+order +"> :hasPortfolio ?p.  <"+order+"> :hasOriginalQuantity ?q. <"+order+"> :hasTotalOriginalPrice ?price}\r\n" +
-					"where \r\n" + 
-					"{ <"+order +"> :hasPortfolio ?p}\r\n" ; 
-			UpdateAction.parseExecute(delete, model) ;
-			
+					get_protfolio_quantity(model, portfolio.toString().split("#")[1], order);
+					get_protfolio_price(model, portfolio.toString().split("#")[1], order);
+
 				}
-				
 			}
-			get_protfolio_quantity(model,portfolio.toString().split("#")[1], order ); 
-			get_protfolio_price(model,portfolio.toString().split("#")[1], order ); 
-			
-			}
-			}
-			create_inventory_increase(model,t,"OEM1", 3); 
+			create_inventory_increase(model,t, 3);
 		
 		}
 		// TODO Auto-generated method stub
@@ -308,20 +266,16 @@ private static void get_protfolio_price(OntModel model, String portfolio, String
 {	
 	String get_price= Prefix+ "SELECT * WHERE{ :"+order.split("#")[1]+" :hasPortfolio :"+portfolio+" . <<:"+portfolio+" :needsNode ?node>> :hasQuantity ?q.  <<:"+portfolio+" :needsNode ?node>> :hasUnitPrice ?p.} "; 
 	List<QuerySolution> prices= execute(get_price,model);
-	float total_price= 0; 
-	for (int price=0; price<prices.size(); price++)
-	{
-		if (prices.get(price).get("?q").toString().contains("float"))
-		{
-			total_price= total_price+ (Float.parseFloat(prices.get(price).get("?q").toString().split("\\^")[0])*
-					Integer.parseInt(prices.get(price).get("?p").toString().split("\\^")[0]));
+	float total_price= 0;
+	for (QuerySolution querySolution : prices) {
+		if (querySolution.get("?q").toString().contains("float")) {
+			total_price = total_price + (Float.parseFloat(querySolution.get("?q").toString().split("\\^")[0]) *
+					Integer.parseInt(querySolution.get("?p").toString().split("\\^")[0]));
+		} else {
+			total_price = total_price + (Integer.parseInt(querySolution.get("?q").toString().split("\\^")[0]) *
+					Integer.parseInt(querySolution.get("?p").toString().split("\\^")[0]));
 		}
-		else
-		{
-			total_price= total_price+ (Integer.parseInt(prices.get(price).get("?q").toString().split("\\^")[0])*
-					Integer.parseInt(prices.get(price).get("?p").toString().split("\\^")[0]));
-		}
-		 
+
 	}
 	String query= Prefix+ "INSERT { :"+order.split("#")[1]+" :hasTotalOriginalPrice "+total_price+"} WHERE { }"; 
 	UpdateAction.parseExecute(query, model) ;
@@ -332,18 +286,14 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	String get_price= Prefix+ "SELECT * WHERE{ :"+order.split("#")[1]+" :hasPortfolio :"+port+" . << :"+port+" :needsNode ?node>> :hasQuantity ?q. } "; 
 	
 	List<QuerySolution> prices= execute(get_price,model);
-	print_results(prices,1); 
+	print_results(prices);
 	
-	float total_quantity= 0; 
-	for (int price=0; price<prices.size(); price++)
-	{
-		if (prices.get(price).get("?q").toString().contains("float"))
-		{
-		total_quantity= total_quantity+ (Float.parseFloat(prices.get(price).get("?q").toString().split("\\^")[0])); 
-		}
-		else
-		{
-			total_quantity= total_quantity+ (Integer.parseInt(prices.get(price).get("?q").toString()));
+	float total_quantity= 0;
+	for (QuerySolution querySolution : prices) {
+		if (querySolution.get("?q").toString().contains("float")) {
+			total_quantity = total_quantity + (Float.parseFloat(querySolution.get("?q").toString().split("\\^")[0]));
+		} else {
+			total_quantity = total_quantity + (Integer.parseInt(querySolution.get("?q").toString()));
 		}
 	}
 	String query= Prefix+ "INSERT { :"+order.split("#")[1]+" :hasOriginalQuantity "+total_quantity+"} WHERE { }"; 
@@ -370,27 +320,28 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		Property hasCapacity = model.getProperty( NS + "hasCapacity");
 		Property has_quantity = model.getProperty(NS+"hasQuantity");
 		Property has_price = model.getProperty(NS+"hasPrice");
-	 for (int i=0; i<ff.size(); i++)
-	 {
-		// String supplier= ff.get(i).get("supplier").toString().split("#")[1]; 
-		 String y=  ff.get(i).get("quantity").toString().split("\\^")[0] ; 
-		 
-		 Individual capacity = model.createIndividual( NS+"Capacity"+RandomStringUtils.randomAlphanumeric(8), capacity_class);
-		 capacity.addProperty(has_product, ff.get(i).get("p").toString()); 
-		 capacity.addProperty(time, t+""); 
-		 capacity.addProperty(has_quantity,y); 
-		 capacity.addProperty(has_price,ff.get(i).get("price").toString()); 
-		Individual supplierr = model.getIndividual(ff.get(i).get("supplier").toString());
+		for (QuerySolution querySolution : ff) {
+			// String supplier= ff.get(i).get("supplier").toString().split("#")[1];
+			String y = querySolution.get("quantity").toString().split("\\^")[0];
+
+			Individual capacity = model.createIndividual(NS + "Capacity" + RandomStringUtils.randomAlphanumeric(8), capacity_class);
+			capacity.addProperty(has_product, querySolution.get("p").toString());
+			capacity.addProperty(time, t + "");
+			capacity.addProperty(has_quantity, y);
+			capacity.addProperty(has_price, querySolution.get("price").toString());
+			Individual supplierr = model.getIndividual(querySolution.get("supplier").toString());
 			supplierr.addProperty(hasCapacity, capacity);
-			
-	 }
-	 test= Prefix+ "Select * "+ "where \r\n" + 
+
+		}
+	 /*test= Prefix+ "Select * "+ "where \r\n" +
 				"{?supplier :hasCapacity ?cap.\r\n" + 
 				"?cap :hasProduct ?p.\r\n" + 
 				"?cap :hasQuantity ?quantity.\r\n" + 
 				"?cap :hasTimeStamp \""+t+"\"."
 				+ "}\r\n" ; 
-		ff= execute (test, model); 
+		ff= execute (test, model);
+
+	  */
 	//	print_results(ff,1); 
 		
 		
@@ -482,20 +433,19 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		Property has_product = model.getProperty(NS+"hasProduct");
 		Property has_quantity = model.getProperty(NS+"hasQuantity");
 		Property has_price = model.getProperty(NS+"hasPrice");
-	
-		for (int i=0; i<suppliers.size();i++)
-	      {
-			Individual capacity = model.createIndividual( NS+"Capacity"+RandomStringUtils.randomAlphanumeric(8), capacity_class);
-			Individual supplier = model.getIndividual(suppliers.get(i).get("subject").toString());
+
+		for (QuerySolution querySolution : suppliers) {
+			Individual capacity = model.createIndividual(NS + "Capacity" + RandomStringUtils.randomAlphanumeric(8), capacity_class);
+			Individual supplier = model.getIndividual(querySolution.get("subject").toString());
 			supplier.addProperty(hasCapacity, capacity);
-			capacity.addProperty(has_product, suppliers.get(i).get("product").toString()); 
-			capacity.addProperty(time, "0"); 
-			capacity.addProperty(has_quantity,"0"); 
-			capacity.addProperty(has_price,getRandomValue(1,10)); 
-			
-	      }
+			capacity.addProperty(has_product, querySolution.get("product").toString());
+			capacity.addProperty(time, "0");
+			capacity.addProperty(has_quantity, "0");
+			capacity.addProperty(has_price, getRandomValue(1, 10));
+
+		}
 	}
-	private static String create_inventory_increase(OntModel model, int t, String node, int increase) {
+	private static String create_inventory_increase(OntModel model, int t, int increase) {
 		Property time = model.getProperty(NS+"hasTimeStamp");
 		Property hasInventory = model.getProperty(NS +"hasInventory");
 		Property has_product = model.getProperty(NS+"hasProduct");
@@ -503,11 +453,11 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		Property has_price = model.getProperty(NS+"hasPrice");
 		Individual product = model.getIndividual(NS+"ProductA");
 		String query= Prefix+ "SELECT ?inv ?q ?p\r\n" + 
-				"	WHERE {  :"+node+" :hasInventory ?inv. ?inv :hasTimeStamp \""+t+"\". ?inv :hasQuantity ?q.  ?inv :hasPrice ?p.}"; 
+				"	WHERE {  :"+ "OEM1" +" :hasInventory ?inv. ?inv :hasTimeStamp \""+t+"\". ?inv :hasQuantity ?q.  ?inv :hasPrice ?p.}";
 		List<QuerySolution> solutions= execute (query,model); 
 		OntClass inventory_class = model.getOntClass(NS+"Inventory");
 		Individual inv = model.createIndividual( NS+"Inventory"+RandomStringUtils.randomAlphanumeric(8), inventory_class);
-		Individual supplier = model.getIndividual(NS+node);
+		Individual supplier = model.getIndividual(NS+ "OEM1");
 		supplier.addProperty(hasInventory, inv);
 		inv.addProperty(has_product, product); 
 		
@@ -522,6 +472,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 
 		return solutions.get(0).get("p").toString(); 
 	}
+
 	private static void create_initial_Inventory(OntModel model) {
 		String query= Prefix+ "SELECT ?subject \r\n" + 
 				"	WHERE { ?subject a :Supplier. ?subject :belongsToTier :SupplierTier1. }"; 
@@ -533,17 +484,16 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		Property has_quantity = model.getProperty(NS+"hasQuantity");
 		Property has_price = model.getProperty(NS+"hasPrice");
 		Individual product = model.getIndividual(NS+"ProductA");
-		for (int i=0; i<suppliers.size();i++)
-	      {
-			Individual inv = model.createIndividual( NS+"Inventory"+RandomStringUtils.randomAlphanumeric(8), inventory_class);
-			Individual supplier = model.getIndividual(suppliers.get(i).get("subject").toString());
+		for (QuerySolution querySolution : suppliers) {
+			Individual inv = model.createIndividual(NS + "Inventory" + RandomStringUtils.randomAlphanumeric(8), inventory_class);
+			Individual supplier = model.getIndividual(querySolution.get("subject").toString());
 			supplier.addProperty(hasInventory, inv);
-			inv.addProperty(has_product, product); 
-			inv.addProperty(time, "0"); 
-			inv.addProperty(has_quantity,getRandomValue(1,10)); 
-			inv.addProperty(has_price,getRandomValue(1,10)); 
-			
-	      }
+			inv.addProperty(has_product, product);
+			inv.addProperty(time, "0");
+			inv.addProperty(has_quantity, getRandomValue(1, 10));
+			inv.addProperty(has_price, getRandomValue(1, 10));
+
+		}
 		 Individual oem = model.getIndividual( NS+"OEM1");
 		 Individual inv = model.createIndividual( NS+"Inventory"+RandomStringUtils.randomAlphanumeric(8), inventory_class);
 			inv.addProperty(has_product, product); 
@@ -562,20 +512,20 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 				"	WHERE { ?subject a :Supplier. ?subject :belongsToTier :SupplierTier1. }"; 
 		List<QuerySolution> suppliers= execute (query,model); 
 		Property capacity_saturation = model.getProperty(NS+"hasCapacitySaturation");
-		for (int i=0; i<suppliers.size();i++)
-	      {
-			Individual supplier = model.getIndividual(suppliers.get(i).get("subject").toString());
-			supplier.addProperty(capacity_saturation, 3000+"");
+		for (QuerySolution querySolution : suppliers) {
+			Individual supplier = model.getIndividual(querySolution.get("subject").toString());
+			supplier.addProperty(capacity_saturation, 3000 + "");
 			//supplier.addProperty(capacity_saturation, 3+"");
-	      }
+		}
 		
 	}
 
-	private static void create_product(OntModel model) {
+	/*private static void create_product(OntModel model) {
 		OntClass product = model.getOntClass( NS + "Product" );
 		Individual order_ind = model.createIndividual( NS+"ProductA", product);
 	  	
 	}
+	 */
 
 	private static int create_orders(OntModel model ) {
 		String query= Prefix+ "SELECT ?subject \r\n" + 
@@ -633,7 +583,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		return order_count; 
 	}
 
-	private static LinkedHashMap<String, ArrayList<String>> disruption(OntModel model, HashMap<String, ArrayList<String>> sc_uniques_final2, String disruption, OntModel copyOfOntModel) {
+	/*private static LinkedHashMap<String, ArrayList<String>> disruption(OntModel model, HashMap<String, ArrayList<String>> sc_uniques_final2, String disruption, OntModel copyOfOntModel) {
 		LinkedHashMap<String, ArrayList<String>>  disrupted_nodes= new  LinkedHashMap<String, ArrayList<String>> (); 
 		if (disruption.contains("total"))
 		{
@@ -652,8 +602,9 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	
 		return disrupted_nodes;
 	}
+	 */
 
-	private static LinkedHashMap<String, ArrayList<String>> material_disruption(OntModel model,
+	/*private static LinkedHashMap<String, ArrayList<String>> material_disruption(OntModel model,
 			HashMap<String, ArrayList<String>> sc_uniques_final2, String disruption, OntModel copyOfOntModel) {
 		
 		if (disruption.equals("material_local"))
@@ -666,7 +617,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	        String node= "SupplierNode1.3"; 
 	        ArrayList<String> nodes= new ArrayList<String>(); 
 	        nodes.add(node); 
-	        createMaterialFlow(model,nodes);
+	        //createMaterialFlow(model,nodes);
 	        String kn= "Select ?node ?input ?inq where { << ?node :hasInputComponent ?input>> :hasComponentQuantity ?inq. ?node a :Customer.}"; 
 			 List<QuerySolution>knn = execute(Prefix+kn,model); 
 	       create_capacity(model);
@@ -685,7 +636,7 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 			model.removeAll();
 	        model.add(copyOfOntModel.getBaseModel()); 
 	        create_raw_material(model,50,100, null);
-			createMaterialFlow(model, nodes);
+			//createMaterialFlow(model, nodes);
 		     create_capacity(model);
 		     System.out.println("Model Size"+ model.size() + " Copy Model Size:"+ copyOfOntModel.size()); 
 		}
@@ -694,15 +645,16 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	        model.removeAll();
 	        model.add(copyOfOntModel.getBaseModel()); 
 	        create_raw_material(model,1,50, "SupplierNode1.4");
-	        createMaterialFlow(model,null);
+	        //createMaterialFlow(model,null);
 			create_capacity(model);
 			System.out.println("Model Size"+ model.size() + " Copy Model Size:"+ copyOfOntModel.size()); 
 		}
 		
 		return null;
 	}
+	 */
 
-	private static LinkedHashMap<String, ArrayList<String>> tier_disruption(OntModel model,
+	/*private static LinkedHashMap<String, ArrayList<String>> tier_disruption(OntModel model,
 			HashMap<String, ArrayList<String>> sc_uniques_final2, String disruption) {
 		LinkedHashMap<String, ArrayList<String>>  disrupted_nodes= new  LinkedHashMap<String, ArrayList<String>> ();
 		if (disruption.equals("tier_local"))
@@ -762,8 +714,9 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		}
 		return disrupted_nodes;
 	}
+	 */
 
-	private static LinkedHashMap<String, ArrayList<String>> total_node_disruption(OntModel model,HashMap<String, ArrayList<String>> sc_uniques_final2, String disruption) {
+	/*private static LinkedHashMap<String, ArrayList<String>> total_node_disruption(OntModel model,HashMap<String, ArrayList<String>> sc_uniques_final2, String disruption) {
 		LinkedHashMap<String, ArrayList<String>>  disrupted_nodes= new  LinkedHashMap<String, ArrayList<String>> ();
 		if (disruption.equals("total_local"))
 		{
@@ -819,16 +772,17 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	
 		return disrupted_nodes;
 	}
+	 */
 
-	private static void allocation_KPI(OntModel model, int time) {
-		String s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\optimization strategies\\FulfillmentPerOrder.rq";
+	private static void allocation_KPI(OntModel model) {
+		String s= "src/optimization strategies/FulfillmentPerOrder.rq";
 	    List <QuerySolution> l= execute_query(s, model);
 	    List<List <QuerySolution>> all= new   ArrayList<List <QuerySolution>> () ; 
-	    print_results(l, time); 
+	    print_results(l);
 	//    all.add(l);
-	    s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\optimization strategies\\fullOrderFullfillement.rq";
+	    s= "src/optimization strategies/fullOrderFullfillement.rq";
 	    l= execute_query(s, model);
-	    print_results(l, time); 
+	    print_results(l);
 	    all.add(l);
 	    
 	  /*  s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\optimization strategies\\getFulfillmentCustomer.rq";
@@ -836,15 +790,15 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	    print_results(l, time); 
 	    all.add(l);
 	    */
-	    s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\optimization strategies\\utilization.rq";
+	    s= "src/optimization strategies/utilization.rq";
 	    l= execute_query(s,model);
-	    print_results(l, time);
+	    print_results(l);
 	    all.add(l);
 	    
 	
 	}
 
-	private static void createMaterialFlow(OntModel model, ArrayList<String> nodes) {
+	/*private static void createMaterialFlow(OntModel model, ArrayList<String> nodes) {
 		 
 		Model inferenceModel = JenaUtil.createDefaultModel();
      for (int i=0; i<hash_map.get("SupplierTier").get(0); i++)
@@ -885,16 +839,19 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	   		flow_customer(i, model); }
 	 }
 
-	private static void flow_customer(int i, OntModel model) {
+	 */
+
+	/*private static void flow_customer(int i, OntModel model) {
 		 String kn= "Select ?node ?input ?inq where { << ?node :hasInputComponent ?input>> :hasComponentQuantity ?inq. ?node a :Customer.}"; 
 		 List<QuerySolution>knn = execute(Prefix+kn,model); 
    		 String shape111 = "C:\\Users\\Ramzy\\Desktop\\datagenerator\\customer_inout.ttl";   
    	     Model shapeModel111 = JenaUtil.createDefaultModel();
    		   shapeModel111.read(shape111);
    		   Model inferenceModel111 = JenaUtil.createDefaultModel();
-   		   inferenceModel111 = RuleUtil.executeRules(model, shapeModel111, 
+   		   inferenceModel111 = RuleUtil.executeRules(model, shapeModel111,
    		   inferenceModel111, null);
-   		   model.add(inferenceModel111); 
+   		   model.add(inferenceModel111);
+
    		 String test= "Select ?node ?out ?outq where { <<?node :hasOutputComponent ?out>> :hasComponentQuantity ?outq. ?node a :Customer.} "; 
 		 	
    	  List<QuerySolution> nour=   execute(Prefix+test,model); 
@@ -924,7 +881,11 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		
 	}
 
-	private static void flow_oem(OntModel model) {
+	 */
+
+
+
+	/* private static void flow_oem(OntModel model) {
 		String q= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\so_inout.rq"; 
 	     List<QuerySolution> l= execute_query(q, model);
 		  for (int n1=0; n1<l.size(); n1++)
@@ -960,7 +921,9 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 		
 	}
 
-	private static Model flow_supplier(int i, OntModel model, ArrayList<String> nodes, Model inferenceModel) {
+	 */
+
+	/* private static Model flow_supplier(int i, OntModel model, ArrayList<String> nodes, Model inferenceModel) {
 		 String kn= "Select ?node ?input ?inq ?out ?outq where { <<?node :hasInputComponent ?input>> :hasComponentQuantity ?inq. }"; 
 		 List<QuerySolution>knn = execute(Prefix+kn,model); 
       String shape1 ="C:\\Users\\Ramzy\\Desktop\\datagenerator\\supplier_inout"+3+".ttl";   
@@ -1046,10 +1009,12 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
 	 return inferenceModel; 
 	
 }// TODO Auto-generated method stub
+
+	 */
 		
 	
 
-	private static void create_raw_material(OntModel model, int min, int max, String node) {
+	private static void create_raw_material(OntModel model) {
 		// 
 		String query_suppl= Prefix+ "SELECT ?subject WHERE { ?subject a :Supplier. ?subject :belongsToTier :SupplierTier"+hash_map.get("SupplierTier").get(0)+"} order by desc(?tier)";
 		List<QuerySolution> l_suppl= execute (query_suppl, model); 
@@ -1060,26 +1025,25 @@ private static void get_protfolio_quantity(OntModel model,String port, String or
      Property comp_quan = model.getProperty(NS+"hasComponentQuantity");
      int val=50;
      int val2=100;
-     for (int i=0; i<l_suppl.size(); i++)
+		for (QuerySolution querySolution : l_suppl) {
+			Individual suppl = model.getIndividual(querySolution.get("subject").toString());
 
-{	 Individual suppl = model.getIndividual(l_suppl.get(i).get("subject").toString());
+			if (querySolution.get("subject").toString().split("#")[1].equals(null)) {
+				val = 100;
+				val2 = 200;
+			}
+			Statement S = model.createStatement(suppl, has_component, compon);
+			Statement S2 = model.createStatement(suppl, has_component, compon2);
+			Resource r = model.createResource(S);
+			Resource r2 = model.createResource(S2);
+			r.addProperty(comp_quan, val2 + "");
+			r2.addProperty(comp_quan, val + "");
 
-if (l_suppl.get(i).get("subject").toString().split("#")[1].equals(node))
-{
-	val= min; val2= max; 
-}
-	Statement S=  model.createStatement(suppl,has_component,compon); 
-	Statement S2=  model.createStatement(suppl,has_component,compon2); 
-	Resource r = model.createResource(S);
-	Resource r2 = model.createResource(S2);
-    r.addProperty(comp_quan,val2+"");
-    r2.addProperty(comp_quan,val+"");
-	
-	}
+		}
 		
 	}
 
-	private static void replace_byUI(OntModel model) {
+	/*private static void replace_byUI(OntModel model) {
 		create_customer_orders(model);
 		String s= "C:\\Users\\Ramzy\\Desktop\\datagenerator\\testing\\customer_order.rq";
 	    execute_query(s, model); 
@@ -1091,6 +1055,7 @@ if (l_suppl.get(i).get("subject").toString().split("#")[1].equals(node))
 		 
 		//execute_query(model,s );
 	}
+	 */
 
 	private static  void read_parameters(BufferedReader br, OntModel model) throws NumberFormatException, IOException {
 		String st;
@@ -1117,7 +1082,7 @@ if (l_suppl.get(i).get("subject").toString().split("#")[1].equals(node))
 	
 	}
 	private static void create_read_products(OntModel model) throws IOException {
-		File file = new File("C:\\Users\\Ramzy\\Desktop\\datagenerator\\products.txt");
+		File file = new File("src/optimization strategies/products.txt");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String st;
 		OntClass product = model.getOntClass( NS + "Product" );
@@ -1142,7 +1107,7 @@ if (l_suppl.get(i).get("subject").toString().split("#")[1].equals(node))
 }
 		
 	
-private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
+/*private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 {
 
 	List<String> keys = new ArrayList<String>(sc_uniques_final.keySet());
@@ -1175,7 +1140,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 		System.out.println("Reliability"); 
 		 caculate("Reliability","?node :hasReliability ?metric. \r\n", "?node :hasReliability ?max. \r\n ", "MAX","DESC",  model, disrupted_nodes);
 		/////////////////////////////////////////////////////////////////////////////////////
-	/*	System.out.println("Responsiveness");
+		System.out.println("Responsiveness");
 		caculate("Responsiveness","?node :hasResponsiveness ?metric. \r\n", "?node :hasResponsiveness ?max. \r\n ", "MAX","DESC", model,disrupted_nodes);
 		/////////////////////////////////////////////////////////////////////////////////////
 		System.out.println("Agility"); 
@@ -1191,10 +1156,12 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 		caculate("CO2","?node :hasCO2Balance ?metric. \r\n", "?node :hasCO2Balance ?max. \r\n ", "MIN"," ",model,disrupted_nodes);
 		/////////////////////////////////////////////////////////////////////////////////////
 		System.out.println("Distance");
-		get_shortest_SC(model, disrupted_nodes);*/
+		get_shortest_SC(model, disrupted_nodes);
 		
 	}
-	private static void caculate(String metricc,String s, String max, String agg, String desc, OntModel model, HashMap<String,ArrayList<String>> disrupted_nodes) {
+	*/
+
+	/*private static void caculate(String metricc,String s, String max, String agg, String desc, OntModel model, HashMap<String,ArrayList<String>> disrupted_nodes) {
 		model.write(out, "TURTLE");
 		String previous= null; 
 		String next= null; 
@@ -1321,11 +1288,9 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 				}
 
 	}
-		
-        
-	
+	 */
 
-	private static void compute_regular(String s, OntModel model, String desc, String metricc) {
+	/*private static void compute_regular(String s, OntModel model, String desc, String metricc) {
 		// TODO Auto-generated method stub
 		ArrayList<String> uniques= new ArrayList();
 		int metric= 0;
@@ -1336,8 +1301,8 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 				List<QuerySolution> groups= execute(Prefix+get_group,model); 
 				
 				for (int g=0; g<groups.size(); g++) {
-			/*	if (i==hash_map.get("SupplierTier").get(0)) temp= " "; 
-				else temp= "?node :hasUpStreamNode :"+previous+".\r\n";*/
+				if (i==hash_map.get("SupplierTier").get(0)) temp= " ";
+				else temp= "?node :hasUpStreamNode :"+previous+".\r\n";
 				String group= groups.get(g).get("group").toString(); 
 			String q= 	"Select ?node ?metric {\r\n" + 
 				"?node rdf:type :Supplier. "+
@@ -1358,25 +1323,30 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 
 		
 	}
+	 */
 
-	private static void delete_node(String string, OntModel model) {
+	/*private static void delete_node(String string, OntModel model) {
 		String q= Prefix+"DELETE   \r\n" + 
 				"where \r\n" + 
 				"{ :"+string +" rdf:type :Node.  :"+string +" ?a ?b. << :"+string+" ?c ?d>> ?g ?f. }\r\n" ;
-		/*String q= Prefix+"DELETE   \r\n" + 
+		String q= Prefix+"DELETE   \r\n" +
 		"where " + 
 		"{ \r\n  Select * where { :"+string +" rdf:type :Supplier.  :"+string +" ?a ?b. << :"+string+" ?c ?d>> ?g ?f. OPTIONAL{ ?l ?m :"+string+". }  } }\r\n" ; 
-	*/	UpdateAction.parseExecute(q, model) ;
+		UpdateAction.parseExecute(q, model) ;
 		//model.write(out, "TURTLE");
 		int x=0; 
 	}
-	private static void delete_relation(String s1, String s2, OntModel model ) {
+	 */
+
+	/*private static void delete_relation(String s1, String s2, OntModel model ) {
 		String q= Prefix+"DELETE   where\r\n" + 
 				"{ :"+s1 +" ?x :"+s2 +" .}\r\n" ; 
 		UpdateAction.parseExecute(q, model) ;
-	
+
 	}
-	private static void print_dyamic_kpi(List<List<QuerySolution>> all, int time)
+	 */
+
+	/*private static void print_dyamic_kpi(List<List<QuerySolution>> all, int time)
 	{
 		 XSSFWorkbook workbook = new XSSFWorkbook();
 		 XSSFSheet sheet = workbook.createSheet("KPIs"+time);
@@ -1425,26 +1395,23 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 					e.printStackTrace();
 				}
 	}
-	private static void print_results(List<QuerySolution> l, int time ) {
+	 */
+	private static void print_results(List<QuerySolution> l) {
 		// TODO Auto-generated method stub
-		ArrayList<Integer> ll; 
-		for (int i=0; i<l.size(); i++)
-		{	
-			Iterator <String> variables= l.get(i).varNames(); 
-			while (variables.hasNext())
-			{ 
-			String var= variables.next(); 
-			if (l.get(i).get(var).toString().contains("integer")|| l.get(i).get(var).toString().contains("float"))
-			{
-				System.out.print(var+": "+l.get(i).get(var).toString().split("\\^")[0]+" ");
+		//ArrayList<Integer> ll;
+		for (QuerySolution querySolution : l) {
+			Iterator<String> variables = querySolution.varNames();
+			while (variables.hasNext()) {
+				String var = variables.next();
+				if (querySolution.get(var).toString().contains("integer") || querySolution.get(var).toString().contains("float")) {
+					System.out.print(var + ": " + querySolution.get(var).toString().split("\\^")[0] + " ");
+				} else if (querySolution.get(var).toString().contains("#"))
+					System.out.print(var + ": " + querySolution.get(var).toString().split("#")[1] + " ");
+				else
+					System.out.print(var + ": " + querySolution.get(var).toString() + " ");
+
 			}
-			else if (l.get(i).get(var).toString().contains("#"))
-			System.out.print(var+": "+l.get(i).get(var).toString().split("#")[1]+" ");
-			else
-				System.out.print(var+": "+l.get(i).get(var).toString()+" ");
-			
-		}
-			System.out.println(" ");	
+			System.out.println(" ");
 		}
 			
 		
@@ -1454,7 +1421,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 	
 	private static void get_shortest_SC(OntModel model, HashMap<String, ArrayList<String>> disrupted_nodes) {
 		LinkedHashMap<String, ArrayList<String>> disrupted_nodes_supplier=null;
-		LinkedHashMap<String, ArrayList<String>> disrupted_nodes_customer= null; 
+		LinkedHashMap<String, ArrayList<String>> disrupted_nodes_customer= null;
 		if (disrupted_nodes!= null)
 		{
 			 disrupted_nodes_supplier= new LinkedHashMap<String, ArrayList<String>> (); 
@@ -1462,13 +1429,13 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 			
 
 		for(Entry<String, ArrayList<String>> listEntry : disrupted_nodes.entrySet()){
-	       if (listEntry.getKey().toString().contains("Supplier"))
+	       if (listEntry.getKey().contains("Supplier"))
 	       { 
-	    	   disrupted_nodes_supplier.put(listEntry.getKey().toString(),listEntry.getValue()); 
+	    	   disrupted_nodes_supplier.put(listEntry.getKey(),listEntry.getValue());
 	    }
 	       else
 	       {
-	    	   disrupted_nodes_customer.put(listEntry.getKey().toString(),listEntry.getValue());
+	    	   disrupted_nodes_customer.put(listEntry.getKey(),listEntry.getValue());
 	       }
 	       TreeMap<String, ArrayList<String>> sorted = new TreeMap<>(disrupted_nodes_supplier); 
 	       Set<Entry<String, ArrayList<String>>> mappings = sorted.entrySet();
@@ -1476,13 +1443,13 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 	       
 	    }
 		if (disrupted_nodes_supplier.size()==0) disrupted_nodes_supplier=null; 
-		if (disrupted_nodes_customer.size()==0)	disrupted_nodes_customer= null; 
+		//if (disrupted_nodes_customer.size()==0)	disrupted_nodes_customer= null;
 		}
 		
 		model.write(out, "TURTLE");
 		ArrayList<String> y= get_shortest_suppliers(model, disrupted_nodes_supplier); 
 
-		ArrayList<String> x=  getshortest_customers(model, disrupted_nodes_customer);
+		ArrayList<String> x=  getshortest_customers(model);
 		String metric= "Distance"; 
 		int total_distance= Integer.parseInt(y.get(y.size()-1))+ Integer.parseInt(x.get(x.size()-1)); 
 		ArrayList<String> nodes = new ArrayList<String> (); 
@@ -1505,10 +1472,10 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 
 	
 		
-	private static ArrayList<String> getshortest_customers(OntModel model,  HashMap<String, ArrayList<String>>  disrupted_nodes) {
-		String q= null ; 
+	private static ArrayList<String> getshortest_customers(OntModel model) {
+		String q;
 		String next= null; 
-		String select=null; 
+		String select;
 		int distance=0; 
 		ArrayList<String> unique= new ArrayList<String>();
 		//ArrayList<String> d_uniques= new ArrayList<String>();  
@@ -1543,9 +1510,9 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 			}
 
 	private static ArrayList<String> get_shortest_suppliers(OntModel model,  HashMap<String, ArrayList<String>> disrupted_nodes) {
-			String q= null ; 
+			String q;
 			String next= null; 
-			String select=null; 
+			String select;
 			int distance=0; 
 			ArrayList<String> unique= new ArrayList<String>();
 			ArrayList<String> d_uniques= new ArrayList<String>();  
@@ -1592,8 +1559,8 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 					+ "?snode :hasLeadTime ?lt. \r\n" 
 					+ "BIND (xsd:integer("+t+") - xsd:integer(?lt) as ?allocationtime).  \r\n" +
 					"BIND (xsd:integer(?quantity) + xsd:integer("+ tofullfil+") as ?diff).   \r\n" +
-					"FILTER  ( regex(str(?tier), \"SupplierTier1\") && regex(str(?p),\""+component.split("#")[1]+"\"))}";   
-		 List<QuerySolution> ll= execute (Prefix+test, model); 
+					"FILTER  ( regex(str(?tier), \"SupplierTier1\") && regex(str(?p),\""+component.split("#")[1]+"\"))}";
+		 List<QuerySolution> ll= execute (Prefix+test, model);
 		String q= Prefix+ "Select * \r\n" + 
 				"where \r\n" + 
 				"{"
@@ -1616,7 +1583,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 		{
 			String allocation_t= l.get(0).get("?capacitytime").toString();  
 			System.out.println("Supplier"+ l.get(0).get("snode").toString().split("#")[1]+ "Quantity"+l.get(0).get("diff").toString().split("\\^")[0]+"component"+component+"time: "+ allocation_t); 
-			allocate_supplier_product(l.get(0).get("snode").toString().split("#")[1], l.get(0).get("diff").toString().split("\\^")[0], component, model,  allocation_t, t);
+			allocate_supplier_product(l.get(0).get("snode").toString().split("#")[1], l.get(0).get("diff").toString().split("\\^")[0], model,  allocation_t, t);
 			create_order_portfolio(model, l.get(0).get("snode").toString().split("#")[1], portfolio, tofullfil+"",Integer.parseInt(allocation_t),component, l.get(0).get("price").toString(), order); 
 			return true;
 		}
@@ -1627,7 +1594,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 	}
 
 
-	private static void allocate_supplier_product(String supplier, String y, String component, OntModel model, String allocation_t, int t) {
+	private static void allocate_supplier_product(String supplier, String y, OntModel model, String allocation_t, int t) {
 	String test= Prefix+ "Select * "+ "where \r\n" + 
 			"{:"+supplier+" :hasCapacity ?cap.\r\n" + 
 			"?cap :hasProduct ?p.\r\n" + 
@@ -1646,7 +1613,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 				"?cap :hasTimeStamp \""+allocation_t+"\"."
 				+ "}\r\n" ; 
 		UpdateAction.parseExecute(q, model) ;
-		print_results(execute (test, model),1);
+		print_results(execute (test, model));
 	//	model.write(out,"Turtle");
 		System.out.println("Chosen Supplier at time "+ allocation_t);
 		propagate_capacity(allocation_t, t, supplier, y, model); 
@@ -1662,7 +1629,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 					"?cap :hasQuantity ?quantity.\r\n" + 
 					"?cap :hasTimeStamp \""+i+"\"."
 					+ "}\r\n" ; 
-			print_results(execute (test, model),1); 
+			print_results(execute (test, model));
 			String q= Prefix+"DELETE   \r\n" + 
 					"{?cap :hasQuantity ?quantity.\r\n }\r\n" + 
 					"Insert {?cap :hasQuantity \""+y+"\"}\r\n" + 
@@ -1675,12 +1642,12 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 					+ "}\r\n" ; 
 			UpdateAction.parseExecute(q, model) ;
 			
-			print_results(execute (test, model),1); 
+			print_results(execute (test, model));
 		 
 		}
 	}
 
-	private static void allocateProduct_OEM(int x, String product, OntModel model) {
+	/*private static void allocateProduct_OEM(int x, String product, OntModel model) {
 		String query = Prefix+"DELETE   \r\n" + 
 				"{ <<?oem :hasInventoryLevel <"+product+"> >> :hasProductQuantity ?quantity. }\r\n" + 
 				"Insert {<<?oem :hasInventoryLevel <"+product+"> >> :hasProductQuantity "+x+".}\r\n" + 
@@ -1689,6 +1656,7 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 		UpdateAction.parseExecute(query, model) ;
 		
 	}
+	 */
 
 	private static void create_capacity(OntModel model) {
 		String query_supplier= Prefix+ "SELECT ?subject WHERE { ?subject a :Supplier.}";
@@ -1696,66 +1664,61 @@ private static void print_excel(XSSFWorkbook workbook,XSSFSheet sheet )
 		 Property capacity = model.getProperty(NS+"hasCurrentCapacity");
      Property capacity_max = model.getProperty(NS+"hasMaximumCapacity");
      Property comp_quantity = model.getProperty(NS+"hasComponentQuantity");
-for (int i=0; i<l_suppliers.size(); i++)
-{
-	String supp=  l_suppliers.get(i).get("subject").toString().split("#")[1]; 
-	String get_component= Prefix+ "Select ?comp ?quantity  where {<< :"+supp +" :hasOutputComponent ?comp >> :hasComponentQuantity ?quantity.}"; 
-	 
-	List<QuerySolution> l_components= execute (get_component,model);
-	Individual supplier = model.getIndividual(l_suppliers.get(i).get("subject").toString());
-	 
-	for (int j=0; j<l_components.size();j++)
-	{
-		
-	Statement S= model.createStatement(supplier,capacity,model.createResource((l_components.get(j).get("comp").toString()))); 
-	Resource r = model.createResource(S);
-	r.addProperty(comp_quantity,0+"");
-	Statement S2=  model.createStatement(supplier,capacity_max,model.createResource(l_components.get(j).get("comp").toString())); 
-	Resource r2 = model.createResource(S2);
-    r2.addProperty(comp_quantity,l_components.get(j).get("quantity"));    
-	}
-	if (supp.split("\\.")[1].contains("1"))// can be removed this is jsut to add more compoenents
-	{
-		if (supp.split("\\.")[0].contains("1")|| supp.split("\\.")[0].contains("2"))
-		{
-			
-		
-		Statement S= model.createStatement(supplier,capacity,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component11")); 
-		Resource r = model.createResource(S);
-		r.addProperty(comp_quantity,0+"");
-		Statement S2=  model.createStatement(supplier,capacity_max,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component11")); 
-		Resource r2 = model.createResource(S2);
-	    r2.addProperty(comp_quantity,50+"");    
-	     S= model.createStatement(supplier,capacity,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component9")); 
-		 r = model.createResource(S);
-		r.addProperty(comp_quantity,0+"");
-		 S2=  model.createStatement(supplier,capacity_max,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component9")); 
-		 r2 = model.createResource(S2);
-	    r2.addProperty(comp_quantity,50+"");    
-		
+		for (QuerySolution l_supplier : l_suppliers) {
+			String supp = l_supplier.get("subject").toString().split("#")[1];
+			String get_component = Prefix + "Select ?comp ?quantity  where {<< :" + supp + " :hasOutputComponent ?comp >> :hasComponentQuantity ?quantity.}";
+
+			List<QuerySolution> l_components = execute(get_component, model);
+			Individual supplier = model.getIndividual(l_supplier.get("subject").toString());
+
+			for (QuerySolution l_component : l_components) {
+
+				Statement S = model.createStatement(supplier, capacity, model.createResource((l_component.get("comp").toString())));
+				Resource r = model.createResource(S);
+				r.addProperty(comp_quantity, 0 + "");
+				Statement S2 = model.createStatement(supplier, capacity_max, model.createResource(l_component.get("comp").toString()));
+				Resource r2 = model.createResource(S2);
+				r2.addProperty(comp_quantity, l_component.get("quantity"));
+			}
+			if (supp.split("\\.")[1].contains("1"))// can be removed this is jsut to add more compoenents
+			{
+				if (supp.split("\\.")[0].contains("1") || supp.split("\\.")[0].contains("2")) {
+
+
+					Statement S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component11"));
+					Resource r = model.createResource(S);
+					r.addProperty(comp_quantity, 0 + "");
+					Statement S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component11"));
+					Resource r2 = model.createResource(S2);
+					r2.addProperty(comp_quantity, 50 + "");
+					S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component9"));
+					r = model.createResource(S);
+					r.addProperty(comp_quantity, 0 + "");
+					S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component9"));
+					r2 = model.createResource(S2);
+					r2.addProperty(comp_quantity, 50 + "");
+
+				} else {
+					Statement S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component10"));
+					Resource r = model.createResource(S);
+					r.addProperty(comp_quantity, 0 + "");
+					Statement S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component10"));
+					Resource r2 = model.createResource(S2);
+					r2.addProperty(comp_quantity, 100 + "");
+					S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component12"));
+					r = model.createResource(S);
+					r.addProperty(comp_quantity, 0 + "");
+					S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component12"));
+					r2 = model.createResource(S2);
+					r2.addProperty(comp_quantity, 100 + "");
+				}
+
+			}
 		}
-		else
-		{
-		Statement S= model.createStatement(supplier,capacity,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component10")); 
-		Resource r = model.createResource(S);
-		r.addProperty(comp_quantity,0+"");
-		Statement S2=  model.createStatement(supplier,capacity_max,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component10")); 
-		Resource r2 = model.createResource(S2);
-	    r2.addProperty(comp_quantity,100+"");    
-	    S= model.createStatement(supplier,capacity,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component12")); 
-		 r = model.createResource(S);
-		r.addProperty(comp_quantity,0+"");
-		 S2=  model.createStatement(supplier,capacity_max,model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component12")); 
-		 r2 = model.createResource(S2);
-	    r2.addProperty(comp_quantity,100+"");    
-		}
-		
-	}
-}		
 //int f=0; 
 }
 
-	private static void create_inventory(OntModel model) {
+	/*private static void create_inventory(OntModel model) {
 		// TODO Auto-generated method stub
 		String query= Prefix+ "SELECT ?subject \r\n" + 
 				"	WHERE { ?subject a :Product }"; 
@@ -1771,6 +1734,7 @@ for (int i=0; i<l.size(); i++)
     r.addProperty(product_quantity,getRandomValue(1,20));
 }		
 }
+	 */
 
 	private static void allocation_process_byCustomer(OntModel model, boolean combine) throws IOException {
 		
@@ -1887,7 +1851,7 @@ for (int i=0; i<l.size(); i++)
 		return l;
 		
 	}
-	private static void create_orders_products(OntModel model)
+	/*private static void create_orders_products(OntModel model)
 	{
 		String query= Prefix+ "SELECT ?subject \r\n" + 
 				"	WHERE { ?subject a :Order }"; 
@@ -1899,21 +1863,20 @@ for (int i=0; i<l.size(); i++)
 		System.out.println("Number of Products per Order is: "+ l_products.size());
 		Property order_product = model.getProperty(NS+"containsProduct");
 		Property product_quantity = model.getProperty(NS+"hasProductQuantity");
-		
-		for (int i=0; i<l_orders.size(); i++)
-		{
-			Individual order = model.getIndividual(l_orders.get(i).get("subject").toString());
-			for (int j=0; j<l_products.size();j++)
-			
-			{
-			Statement S=  model.createStatement(order,order_product,l_products.get(j).get("subject")); 
-		    Resource r = model.createResource(S);
-		    r.addProperty(product_quantity,getRandomValue(1,20));
-		   // r.addProperty(product_quantity,2+"");
+
+		for (QuerySolution l_order : l_orders) {
+			Individual order = model.getIndividual(l_order.get("subject").toString());
+			for (QuerySolution l_product : l_products) {
+				Statement S = model.createStatement(order, order_product, l_product.get("subject"));
+				Resource r = model.createResource(S);
+				r.addProperty(product_quantity, getRandomValue(1, 20));
+				// r.addProperty(product_quantity,2+"");
 			}
 		}	
 	}
-private static void create_customer_orders(OntModel model)
+	 */
+
+/*private static void create_customer_orders(OntModel model)
 {
 	String query= Prefix+ "SELECT ?subject \r\n" + 
 			"	WHERE { ?subject a :Customer. ?subject :belongsToTier :CustomerTier1. }"; 
@@ -1921,16 +1884,15 @@ private static void create_customer_orders(OntModel model)
 	System.out.println("Total number of Customers is: "+ l.size());
 	Property makes = model.getProperty(NS+"makes");
 	OntClass order = model.getOntClass( NS + "Order" );
-	for (int i=0; i<l.size();i++)
-      {
-		Individual customer = model.getIndividual(l.get(i).get("subject").toString());
-		for (int j=0; j<4; j++)
-		{
-		Individual order_ind = model.createIndividual( NS+"Order"+RandomStringUtils.randomAlphanumeric(8), order);
-        customer.addProperty(makes,order_ind);
-       }
+	for (QuerySolution querySolution : l) {
+		Individual customer = model.getIndividual(querySolution.get("subject").toString());
+		for (int j = 0; j < 4; j++) {
+			Individual order_ind = model.createIndividual(NS + "Order" + RandomStringUtils.randomAlphanumeric(8), order);
+			customer.addProperty(makes, order_ind);
+		}
 	}
 }
+ */
 
 
 
@@ -1978,7 +1940,7 @@ private static void create_customer_orders(OntModel model)
         	}
         }
 	}
-	private static void create_tiers_nodes(int tiers, ArrayList<Integer>tiers_array ,  OntClass Node, BufferedReader reader, OntModel model) throws IOException {
+	private static void create_tiers_nodes(int tiers, ArrayList<Integer> tiers_array, OntClass Node, OntModel model) {
 		  Property p_node  = model.getProperty(NS+"belongsToTier");
 		  Property leadtime  = model.getProperty(NS+"hasLeadTime");
 		  Property manufactures  = model.getProperty(NS+"manufactures");
@@ -2017,39 +1979,34 @@ private static void create_customer_orders(OntModel model)
         			
         		
     		//	n.addProperty(manufactures, "Component"+getRandomValue(1,3));
-        		List<QuerySolution> l= get_data_property(Node.getLocalName(), model); 
-            	for(int k=0 ; k< l.size(); k++)
-    	      	{
-            		String property= l.get(k).get("subject").toString().split("#")[1]; 
-            		if (Node.getLocalName().contains("Supplier") && hash_map.get(property) != null)
-        			{
-            			
-            			ArrayList <Integer> temp= hash_map.get(property); 
-            			if (property.contains("Group")) {
-            				//n.addProperty(model.getProperty(l.get(k).get("subject").toString()),getRandomValue(1,temp.get(i-1)));
-            				int c=1; 
-            				if (j>2&&j<=5)c=2;
-            				if (j>=5)c=3; 
-            				float nss= (i+c); 
-            				
-            				int f=Math.round(nss); 
-            				n.addProperty(model.getProperty(l.get(k).get("subject").toString()),f+"");
-            			}
-            			else
-        		    	{	//n.addProperty(model.getProperty(l.get(k).get("subject").toString()), getRandomValue(temp.get(0),temp.get(1)));
-            				int f=temp.get(0)+j; 
-            				n.addProperty(model.getProperty(l.get(k).get("subject").toString()),f+"") ;
-        		    	}
-        		    	
-            					
-        		    }
-            		if (Node.getLocalName().contains("Customer") && hash_map_customer.get(property) != null)
-        			{
-            			ArrayList <Integer> temp= hash_map_customer.get(property); 
-        		    	n.addProperty(model.getProperty( l.get(k).get("subject").toString()),
-        	      				getRandomValue(temp.get(0),temp.get(1)));
-        		    }
-    			}	
+        		List<QuerySolution> l= get_data_property(Node.getLocalName(), model);
+				for (QuerySolution querySolution : l) {
+					String property = querySolution.get("subject").toString().split("#")[1];
+					if (Node.getLocalName().contains("Supplier") && hash_map.get(property) != null) {
+
+						ArrayList<Integer> temp = hash_map.get(property);
+						if (property.contains("Group")) {
+							//n.addProperty(model.getProperty(l.get(k).get("subject").toString()),getRandomValue(1,temp.get(i-1)));
+							int c = 1;
+							if (j > 2 && j <= 5) c = 2;
+							if (j >= 5) c = 3;
+							float nss = (i + c);
+
+							int f = Math.round(nss);
+							n.addProperty(model.getProperty(querySolution.get("subject").toString()), f + "");
+						} else {    //n.addProperty(model.getProperty(l.get(k).get("subject").toString()), getRandomValue(temp.get(0),temp.get(1)));
+							int f = temp.get(0) + j;
+							n.addProperty(model.getProperty(querySolution.get("subject").toString()), f + "");
+						}
+
+
+					}
+					if (Node.getLocalName().contains("Customer") && hash_map_customer.get(property) != null) {
+						ArrayList<Integer> temp = hash_map_customer.get(property);
+						n.addProperty(model.getProperty(querySolution.get("subject").toString()),
+								getRandomValue(temp.get(0), temp.get(1)));
+					}
+				}
             
         	}
         }

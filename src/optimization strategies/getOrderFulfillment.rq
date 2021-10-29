@@ -1,0 +1,13 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix : <http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#>
+
+
+SELECT (SUM(IF(REGEX(str(?x),"True"), 1, 0)) as ?fulfilled)
+(SUM(IF(REGEX(str(?x),"False"), 1, 0)) as ?notfulfilled) 
+(SUM(IF(REGEX(str(?x),"Partial") , 1, 0)) as ?partial) 
+where{
+?order :isFulfilled ?x.
+} 

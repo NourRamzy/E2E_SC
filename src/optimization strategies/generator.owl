@@ -1,0 +1,719 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#"
+     xml:base="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#OEMhasNode -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#OEMhasNode">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasOEM"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#affectsNode -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#affectsNode">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Disruption"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#belongsToTier -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#belongsToTier">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Tier"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#containsProduct -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#containsProduct">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Order"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Product"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#getsProduct -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#getsProduct"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCapacity -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCapacity"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCause -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCause">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Disruption"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Cause"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasDownStreamNode -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasDownStreamNode">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasUpStreamNode"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasDownStreamTier -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasDownStreamTier">
+        <owl:inverseOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasUpStreamTier"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasInputComponent -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasInputComponent"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasInventory -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasInventory"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasOEM -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasOEM">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#OEM"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasOutputComponent -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasOutputComponent"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasPortfolio -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasPortfolio"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProcess -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProcess">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasRecoveredPortfolio -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasRecoveredPortfolio"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasScope -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasScope">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Cause"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Scope"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasUpStreamNode -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasUpStreamNode">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasUpStreamTier -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasUpStreamTier">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Tier"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Tier"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#makes -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#makes">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Order"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#needsNode -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#needsNode"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasAgility -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasAgility">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasAssetManagementEfficiency -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasAssetManagementEfficiency">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCO2Balance -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCO2Balance">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCapacitySaturation -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCapacitySaturation"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasComponentQuantity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasComponentQuantity">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCost -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCost">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCurrentCapacity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasCurrentCapacity">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasDeliveryTime -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasDeliveryTime"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasEndTime -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasEndTime">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Disruption"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasFulfilledProductQuantity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasFulfilledProductQuantity"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasGroup -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasGroup">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasI -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasI"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasInventoryLevel -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasInventoryLevel">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#OEM"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLatMax -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLatMax"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLatMin -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLatMin"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLatitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLatitude">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLeadTime -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLeadTime"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLocation -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLocation">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLongMax -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLongMax"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLongMin -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLongMin"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLongitude -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasLongitude">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasMaximumCapacity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasMaximumCapacity">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasOrderID -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasOrderID">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Order"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasPrice -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasPrice"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasPriority -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasPriority">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProduct -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProduct"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProductProfitability -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProductProfitability">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Product"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProductQuantity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasProductQuantity"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasQuantity -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasQuantity"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasReliability -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasReliability">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasResponsiveness -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasResponsiveness">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer"/>
+                    <rdf:Description rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasScope -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasScope">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Disruption"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasShippingMethod -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasShippingMethod"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasStartTime -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasStartTime">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Disruption"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasTimeStamp -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasTimeStamp"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasTransportMode -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#hasTransportMode">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#isFulfilled -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#isFulfilled"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#isUnique -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#isUnique"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#manufactures -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#manufactures"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Capacity -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Capacity"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Cause -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Cause"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Customer">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+        <owl:disjointWith rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Deliver -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Deliver">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Disruption -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Disruption"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Enable -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Enable">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#External -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#External">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Cause"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Internal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Internal">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Cause"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Inventory -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Inventory"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Make -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Make">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#OEM -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#OEM">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Order -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Order"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Plan -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Plan">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Portfolio -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Portfolio"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Product -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Product"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Return -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Return">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Scope -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Scope"/>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Source -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Source">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Process"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Supplier">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Node"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Tier -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Tier"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.8.20170104-2310) https://github.com/owlcs/owlapi -->
+

@@ -1,0 +1,14 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix : <http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#>
+
+SELECT ?customer ?priority
+WHERE
+{
+?customer a :Customer.
+?customer :hasPriority ?priority.
+}
+ORDER BY DESC (?priority)
+

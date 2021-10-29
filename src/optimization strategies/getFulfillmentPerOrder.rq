@@ -1,0 +1,18 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix : <http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#>
+
+Select  ?order (sum(if(xsd:integer(?quantity)=xsd:integer(?fulfilled), 1, 0)) as ?fullfilled)
+(sum(if(xsd:integer(?quantity)> xsd:integer(?fulfilled) && (xsd:integer(?fulfilled)>0) , 1, 0)) as ?partial) 
+(sum(if((xsd:integer(?fulfilled)=0) , 1, 0)) as ?false) 
+where{
+<< ?order :containsProduct ?product >> :hasFulfilledProductQuantity  ?fulfilled.
+<< ?order :containsProduct ?product >> :hasProductQuantity  ?quantity.
+} 
+Group by (?order)
+
+
+
+

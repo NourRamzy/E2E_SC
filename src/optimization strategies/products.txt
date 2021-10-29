@@ -1,0 +1,1 @@
+ProductA:1 Product1:1 Product2:2

@@ -518,6 +518,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="src-examples" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

@@ -1,0 +1,60 @@
+\chapter{Evaluation Queries} \label{kpi}
+
+\begin{table}[H]
+\scriptsize
+  \begin{tabular}{|p{.02\textwidth}|p{.51\textwidth}|p{.40\textwidth}|}
+
+  % {@{}|l|c|c|@{}}
+    \hline
+    \bigstrut[t]      & SPARQL Query  & Result Sample  \\
+    \hline
+    \bigstrut[t] 
+  \textit{Q1} & SELECT  \text{*} 
+WHERE  \{   ?customer :makes ?order.\} & Node1.4 makes OrderJZHu5   
+  \\\cline{1-3}
+
+\textit{Q2} & SELECT  \text{*} 
+WHERE \{  ?c a :Customer.  ?c2 a :Customer.  
+?c ?x ?c2. \} & Node1.2 hasDwnStremNode Node2.3 
+ \\\cline{1-3}
+
+\textit{Q3} & SELECT \text{*} WHERE \{ 
+<<:Product :needsProduct ?p>> :needsQuantity \} & <<ProductA needsProduct Product1>> needsQuantity 1 
+\\\cline{1-3}
+
+
+\textit{Q4}& SELECT \text{*} WHERE\{  :Node3.2 :hasProcess ?process. \}& :Node3.2 :hasProcess :PrcsA.
+:PrcsA rdf:type :Make
+\\\cline{1-3}
+
+
+\textit{Q5} & SELECT   \text{*}  WHERE \{ 
+:Node3.2 :hasSCORKPI ?kpi.\} & Responsiveness: 24 , Reliability: 85, Agility: 22 
+\\\cline{1-3}
+
+
+
+\textit{Q6}& SELECT \text{*} WHERE{ 
+?node ?a :Node.}& Node1.1 :hasDownStreamNode 
+Node1.2  
+\\\cline{1-3}
+
+%\textit{Q7}& Eliminated for conciseness  & Eliminated for conciseness 
+%\\\cline{1-3}
+%\textit{Q12}& Eliminated for conciseness  & Eliminated for conciseness 
+%\\\cline{1-3}
+
+   \end{tabular}
+  \caption{SENS-SC Evaluation Queries and Corresponding Result Sample.}
+  \label{evaluationqueries}
+\end{table}
+\begin{lstlisting} [caption= Orders Fulfillment,label=orderfull]
+SELECT  ?order (SUM(IF(REGEX(str(?x),"True"), 1, 0)) as ?fulfilled)
+(SUM(IF(REGEX(str(?x),"False"), 1, 0)) as ?notfulfilled) WHERE{ ?order :isFulfilled  ?x. }
+\end{lstlisting}
+\begin{lstlisting} [caption= Average Utilization,label=utilization]
+SELECT * WHERE{ ?supplier :hasCapacitySaturation ?maxcap.
+?supplier :hasCurrentCapacity ?cap.  ?cap :hasQuantity ?quantity.  ?cap :hasTimeStamp 178.
+Bind (100* xsd:integer(?quantity)/ xsd:integer(?maxcap) as ?utilization)}
+\end{lstlisting}
+\raggedbottom

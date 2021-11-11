@@ -1,3 +1,5 @@
+package main.java;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntClass;
@@ -45,11 +47,11 @@ public class generator {
 		sc_uniques_final = new HashMap<>();
 
 		//Resources
-		File file = new File("src/resources/configurationfile.txt");
+		File file = new File("src/main/resources/configurationfile.txt");
 		BufferedReader br = new BufferedReader(new FileReader(file));
-		out = new BufferedWriter (new FileWriter("src/out1.ttl"));
+		out = new BufferedWriter (new FileWriter("src/main/java/output.ttl"));
 		OntModel model = ModelFactory.createOntologyModel();
-		InputStream generator = FileManager.get().open( "src/resources/generator.owl" );
+		InputStream generator = FileManager.get().open( "src/main/resources/generator.owl" );
 
 		model.read(generator, null);
 		read_parameters(br, model);
@@ -615,7 +617,7 @@ public class generator {
 	private static void create_read_products(OntModel model) throws IOException {
 
 		//Check product properties (quantity, profitability, type)
-		File file = new File("src/resources/products.txt");
+		File file = new File("src/main/resources/products.txt");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 
 		OntClass product = model.getOntClass( NS + "Product" );

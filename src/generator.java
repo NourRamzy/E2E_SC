@@ -329,8 +329,7 @@ public class generator {
 		List <QuerySolution> oem_inventory= execute(query,model);
 		int oem_q= Integer.parseInt(oem_inventory.get(0).get("q").toString());
 
-		//TODO
-		//if -> OEM inventory >= needed quantity, then delete query, else -> ?
+		//if -> OEM inventory >= needed quantity, then delete query, else -> don't
 		if (oem_q>= quantity)
 		{
 			int n= oem_q-quantity;
@@ -552,7 +551,7 @@ public class generator {
 
 	private static void create_raw_material(OntModel model) {
 
-		//Check if supplier has needed materials?
+		//Check needed materials
 		String query_supplier= Prefix+ "SELECT ?subject WHERE { ?subject a :Supplier. ?subject :belongsToTier :SupplierTier"
 				+hash_map.get("SupplierTier").get(0)
 				+"} order by desc(?tier)";
@@ -660,9 +659,8 @@ public class generator {
 
 	private static boolean allocateComponent_supplier(int toFulfill, String component, OntModel model,int t,Individual portfolio, String order) throws IOException {
 
-		//Allocate supplier components?
-		//TODO rename string to what?
-		String test= Prefix+ "Select * where"
+		//Allocate supplier components
+		String allocate= Prefix+ "Select * where"
 				 	+"{"
 					+"?snode :hasOEM :OEM1. "
 					+"?snode :belongsToTier ?tier.\r\n"
@@ -675,10 +673,9 @@ public class generator {
 					+"BIND (xsd:integer("+t+") - xsd:integer(?lt) as ?allocationtime).  \r\n"
 				 	+"BIND (xsd:integer(?quantity) + xsd:integer("+ toFulfill+") as ?diff).   \r\n"
 				 	+"FILTER  ( regex(str(?tier), \"SupplierTier1\") && regex(str(?p),\""+component.split("#")[1]+"\"))}";
-		 List<QuerySolution> ll= execute (Prefix+test, model);
+		 List<QuerySolution> ll= execute (Prefix+allocate, model);
 
-		//TODO rename string
-		String q= Prefix+ "Select * \r\n"
+		String query= Prefix+ "Select * \r\n"
 				+"where \r\n"
 				+"{"
 				+"?snode :hasOEM :OEM1. "
@@ -695,7 +692,7 @@ public class generator {
 				+"FILTER  (regex(str(?tier), \"SupplierTier1\")"
 				+"&& (xsd:integer(?saturation)>= ?diff) && regex(str(?p),\""+component.split("#")[1]+"\")"
 				+" && (xsd:integer(?allocationtime)= xsd:integer(?capacitytime))).\r\n }"  ;
-		List<QuerySolution> l= execute (Prefix+q, model);
+		List<QuerySolution> l= execute (Prefix+query, model);
 
 		if (l.size()>0)
 		{
@@ -714,8 +711,7 @@ public class generator {
 	private static void allocate_supplier_product(String supplier, String y, OntModel model, String allocation_t, int t) {
 
 		//Allocate required products at supplier
-		//TODO rename string
-		String test= Prefix+ "Select * "
+		String checkSupplier= Prefix+ "Select * "
 				+"where \r\n"
 				+"{:"+supplier+" :hasCapacity ?cap.\r\n"
 				+"?cap :hasProduct ?p.\r\n"
@@ -734,7 +730,7 @@ public class generator {
 				+"}\r\n" ;
 
 		UpdateAction.parseExecute(quantity, model) ;
-		print_results(execute (test, model));
+		print_results(execute (checkSupplier, model));
 		System.out.println("Chosen Supplier at time "+ allocation_t);
 		propagate_capacity(allocation_t, t, supplier, y, model); 
 		 
@@ -745,7 +741,6 @@ public class generator {
 		//Not sure
 		IntStream.rangeClosed(Integer.parseInt(allocation_t), t).forEach(i -> {
 
-			//TODO rename string
 			String test = Prefix + "Select * "
 					+ "where \r\n"
 					+ "{:" + supplier + " :hasCapacity ?cap.\r\n"
@@ -769,70 +764,6 @@ public class generator {
 			print_results(execute(test, model));
 		});
 	}
-
-	/*
-	private static void create_capacity(OntModel model) {
-
-		String query_supplier= Prefix+ "SELECT ?subject WHERE { ?subject a :Supplier.}";
-		List<QuerySolution> l_suppliers= execute (query_supplier,model); 
-		Property capacity = model.getProperty(NS+"hasCurrentCapacity");
-     	Property capacity_max = model.getProperty(NS+"hasMaximumCapacity");
-     	Property comp_quantity = model.getProperty(NS+"hasComponentQuantity");
-
-			for (QuerySolution l_supplier : l_suppliers) {
-				String supp = l_supplier.get("subject").toString().split("#")[1];
-				String get_component = Prefix + "Select ?comp ?quantity  where {<< :" + supp + " :hasOutputComponent ?comp >> :hasComponentQuantity ?quantity.}";
-
-				List<QuerySolution> l_components = execute(get_component, model);
-				Individual supplier = model.getIndividual(l_supplier.get("subject").toString());
-
-			for (QuerySolution l_component : l_components) {
-
-				Statement S = model.createStatement(supplier, capacity, model.createResource((l_component.get("comp").toString())));
-				Resource r = model.createResource(S);
-				r.addProperty(comp_quantity, 0 + "");
-				Statement S2 = model.createStatement(supplier, capacity_max, model.createResource(l_component.get("comp").toString()));
-				Resource r2 = model.createResource(S2);
-				r2.addProperty(comp_quantity, l_component.get("quantity"));
-			}
-			if (supp.split("\\.")[1].contains("1"))// can be removed this is just to add more components
-			{
-				if (supp.split("\\.")[0].contains("1") || supp.split("\\.")[0].contains("2")) {
-
-
-					Statement S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component11"));
-					Resource r = model.createResource(S);
-					r.addProperty(comp_quantity, 0 + "");
-					Statement S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component11"));
-					Resource r2 = model.createResource(S2);
-					r2.addProperty(comp_quantity, 50 + "");
-					S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component9"));
-					r = model.createResource(S);
-					r.addProperty(comp_quantity, 0 + "");
-					S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component9"));
-					r2 = model.createResource(S2);
-					r2.addProperty(comp_quantity, 50 + "");
-
-				} else {
-					Statement S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component10"));
-					Resource r = model.createResource(S);
-					r.addProperty(comp_quantity, 0 + "");
-					Statement S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component10"));
-					Resource r2 = model.createResource(S2);
-					r2.addProperty(comp_quantity, 100 + "");
-					S = model.createStatement(supplier, capacity, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component12"));
-					r = model.createResource(S);
-					r.addProperty(comp_quantity, 0 + "");
-					S2 = model.createStatement(supplier, capacity_max, model.createResource("http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#Component12"));
-					r2 = model.createResource(S2);
-					r2.addProperty(comp_quantity, 100 + "");
-				}
-
-			}
-		}
-	}
-
-	 */
 
 	private static boolean allocate(String product, int product_quantity, OntModel model, int t, Individual portfolio, String order) {
 
@@ -885,7 +816,7 @@ public class generator {
 
 	private static void create_relations(int tiers, ArrayList<Integer>tiers_array ,Individual oem, Property p, Property Node_node, Property node_oem, OntClass Node, OntModel model) {
 
-		//
+		//Create web
         for (int i=1; i<tiers; i++)
         {
         	Individual t = model.getIndividual(NS+ Node.getLocalName()+"Tier"+ (i));
@@ -916,7 +847,7 @@ public class generator {
 
 	private static void create_tiers_nodes(int tiers, ArrayList<Integer> tiers_array, OntClass Node, OntModel model) {
 
-		//
+		//Create nodes for given properties
 		Property p_node = model.getProperty(NS+"belongsToTier");
 		Property leadtime = model.getProperty(NS+"hasLeadTime");
 		Property manufactures = model.getProperty(NS+"manufactures");
@@ -987,7 +918,6 @@ public class generator {
 
 	private static List<QuerySolution> get_data_property(String node, OntModel model) {
 
-		//Rename string?
 		 String querystring = Prefix +"SELECT Distinct ?subject \r\n"
 				 +"	WHERE { ?subject rdfs:domain/(owl:unionOf/rdf:rest*/rdf:first)* :"
 				 +node
@@ -997,7 +927,6 @@ public class generator {
 
 	private static String getRandomValue(int i, int j) {
 
-		//Why?
 		Random r = new Random();
 		int R = r.nextInt(j - i) + i;
 

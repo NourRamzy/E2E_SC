@@ -1,4 +1,4 @@
-package main.java;
+package main.java.main.java;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.jena.ontology.Individual;
@@ -36,12 +36,11 @@ public class generator {
 	public static void main(String[] args) throws IOException {
 		
 		//Prefix-sources
-		Prefix= """
-				PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r
-				PREFIX owl: <http://www.w3.org/2002/07/owl#>\r
-				PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r
-				PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r
-				Prefix : <http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#>""";
+		Prefix= "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r"+
+				"PREFIX owl: <http://www.w3.org/2002/07/owl#>\r"+
+				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r"+
+				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\r"+
+				"Prefix : <http://www.semanticweb.org/ramzy/ontologies/2021/3/untitled-ontology-6#>";
 		hash_map = new HashMap<>();
 		hash_map_customer = new HashMap<>();
 		sc_uniques_final = new HashMap<>();
@@ -104,10 +103,10 @@ public class generator {
 	    generation(model);
 
 		//Allocation function, supply plan generation
-	    allocation(model);
+	    fulfillDemand(model);
 
 		//Allocation evaluation
-	    allocation_KPI(model);
+	    evaluationMetrics(model);
 
       String adjust= Prefix+ "DELETE   \r\n" +
 				"{ ?capacity :hasQuantity \"0\"}\r\n" + 
@@ -120,7 +119,7 @@ public class generator {
       out.close();
 	}
 	
-	private static void allocation(OntModel model) {
+	private static void fulfillDemand(OntModel model) {
 
 		//Capacity requirement allocation
 		String get_oem_leadtime= Prefix+" Select * where { :OEM1 :hasLeadTime ?lt .}"; 
@@ -534,18 +533,18 @@ public class generator {
 		return order_count; 
 	}
 
-	private static void allocation_KPI(OntModel model) {
+	private static void evaluationMetrics(OntModel model) {
 
 		//Check if allocation requirements are met?
-		String s= "optimization strategies/FulfillmentPerOrder.rq";
+		String s= "Evaluation_KPI/FulfillmentPerOrder.rq";
 	    List <QuerySolution> l= execute_query(s, model);
 		print_results(l);
 
-	    s= "optimization strategies/fullOrderFullfillement.rq";
+	    s= "Evaluation_KPI/fullOrderFullfillement.rq";
 	    l= execute_query(s, model);
 	    print_results(l);
 
-	    s= "optimization strategies/utilization.rq";
+	    s= "Evaluation_KPI/utilization.rq";
 	    l= execute_query(s,model);
 	    print_results(l);
 
